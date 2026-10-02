@@ -11,14 +11,16 @@
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
     QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
+    QCursor, QFont, QFontDatabase, QGradient,
+    QIcon, QImage, QKeySequence, QLinearGradient,
+    QPainter, QPalette, QPixmap, QRadialGradient,
+    QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QFormLayout, QHBoxLayout,
     QHeaderView, QLabel, QLineEdit, QMainWindow,
-    QMenuBar, QPushButton, QSizePolicy, QSpacerItem,
-    QStatusBar, QTableView, QVBoxLayout, QWidget)
+    QMenu, QMenuBar, QPushButton, QSizePolicy,
+    QSpacerItem, QStatusBar, QTableView, QVBoxLayout,
+    QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -26,6 +28,8 @@ class Ui_MainWindow(object):
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(900, 600)
         MainWindow.setMinimumSize(QSize(900, 0))
+        self.actionContact = QAction(MainWindow)
+        self.actionContact.setObjectName(u"actionContact")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
@@ -121,10 +125,15 @@ class Ui_MainWindow(object):
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 900, 25))
+        self.menuAdd = QMenu(self.menubar)
+        self.menuAdd.setObjectName(u"menuAdd")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
+
+        self.menubar.addAction(self.menuAdd.menuAction())
+        self.menuAdd.addAction(self.actionContact)
 
         self.retranslateUi(MainWindow)
 
@@ -133,6 +142,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        self.actionContact.setText(QCoreApplication.translate("MainWindow", u"Contact", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"First name", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Surname", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Lastname", None))
@@ -142,5 +152,6 @@ class Ui_MainWindow(object):
         self.phoneEdit.setText("")
         self.searchButton.setText(QCoreApplication.translate("MainWindow", u"Search", None))
         self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Reset", None))
+        self.menuAdd.setTitle(QCoreApplication.translate("MainWindow", u"Add", None))
     # retranslateUi
 

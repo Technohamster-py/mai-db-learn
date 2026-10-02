@@ -144,8 +144,20 @@
      <height>25</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuAdd">
+    <property name="title">
+     <string>Add</string>
+    </property>
+    <addaction name="actionContact"/>
+   </widget>
+   <addaction name="menuAdd"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionContact">
+   <property name="text">
+    <string>Contact</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
