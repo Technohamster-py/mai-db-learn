@@ -17,16 +17,16 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QFormLayout, QHBoxLayout,
-    QHeaderView, QLabel, QLineEdit, QMainWindow,
-    QMenu, QMenuBar, QPushButton, QSizePolicy,
-    QSpacerItem, QStatusBar, QTableView, QVBoxLayout,
-    QWidget)
+    QHeaderView, QLabel, QLayout, QLineEdit,
+    QMainWindow, QMenu, QMenuBar, QPushButton,
+    QSizePolicy, QSpacerItem, QStatusBar, QTableView,
+    QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(900, 600)
+        MainWindow.resize(1045, 600)
         MainWindow.setMinimumSize(QSize(900, 0))
         self.actionContact = QAction(MainWindow)
         self.actionContact.setObjectName(u"actionContact")
@@ -34,57 +34,72 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.verticalLayout = QVBoxLayout()
+        self.widget = QWidget(self.centralwidget)
+        self.widget.setObjectName(u"widget")
+        self.widget.setMaximumSize(QSize(300, 16777215))
+        self.verticalLayout = QVBoxLayout(self.widget)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.formLayout_2 = QFormLayout()
         self.formLayout_2.setObjectName(u"formLayout_2")
-        self.label = QLabel(self.centralwidget)
+        self.formLayout_2.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
+        self.formLayout_2.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
+        self.label = QLabel(self.widget)
         self.label.setObjectName(u"label")
+        self.label.setMaximumSize(QSize(70, 16777215))
 
         self.formLayout_2.setWidget(0, QFormLayout.ItemRole.LabelRole, self.label)
 
-        self.FirstnameCombo = QComboBox(self.centralwidget)
+        self.FirstnameCombo = QComboBox(self.widget)
         self.FirstnameCombo.setObjectName(u"FirstnameCombo")
+        self.FirstnameCombo.setMaximumSize(QSize(200, 16777215))
 
         self.formLayout_2.setWidget(0, QFormLayout.ItemRole.FieldRole, self.FirstnameCombo)
 
-        self.label_2 = QLabel(self.centralwidget)
+        self.label_2 = QLabel(self.widget)
         self.label_2.setObjectName(u"label_2")
+        self.label_2.setMaximumSize(QSize(70, 16777215))
 
         self.formLayout_2.setWidget(1, QFormLayout.ItemRole.LabelRole, self.label_2)
 
-        self.SurnameCombo = QComboBox(self.centralwidget)
+        self.SurnameCombo = QComboBox(self.widget)
         self.SurnameCombo.setObjectName(u"SurnameCombo")
+        self.SurnameCombo.setMaximumSize(QSize(200, 16777215))
 
         self.formLayout_2.setWidget(1, QFormLayout.ItemRole.FieldRole, self.SurnameCombo)
 
-        self.label_3 = QLabel(self.centralwidget)
+        self.label_3 = QLabel(self.widget)
         self.label_3.setObjectName(u"label_3")
+        self.label_3.setMaximumSize(QSize(70, 16777215))
 
         self.formLayout_2.setWidget(2, QFormLayout.ItemRole.LabelRole, self.label_3)
 
-        self.LastnameCombo = QComboBox(self.centralwidget)
+        self.LastnameCombo = QComboBox(self.widget)
         self.LastnameCombo.setObjectName(u"LastnameCombo")
+        self.LastnameCombo.setMaximumSize(QSize(200, 16777215))
 
         self.formLayout_2.setWidget(2, QFormLayout.ItemRole.FieldRole, self.LastnameCombo)
 
-        self.label_4 = QLabel(self.centralwidget)
+        self.label_4 = QLabel(self.widget)
         self.label_4.setObjectName(u"label_4")
+        self.label_4.setMaximumSize(QSize(60, 16777215))
 
         self.formLayout_2.setWidget(3, QFormLayout.ItemRole.LabelRole, self.label_4)
 
-        self.StreetCombo = QComboBox(self.centralwidget)
+        self.StreetCombo = QComboBox(self.widget)
         self.StreetCombo.setObjectName(u"StreetCombo")
+        self.StreetCombo.setMaximumSize(QSize(200, 16777215))
 
         self.formLayout_2.setWidget(3, QFormLayout.ItemRole.FieldRole, self.StreetCombo)
 
-        self.label_5 = QLabel(self.centralwidget)
+        self.label_5 = QLabel(self.widget)
         self.label_5.setObjectName(u"label_5")
+        self.label_5.setMaximumSize(QSize(60, 16777215))
 
         self.formLayout_2.setWidget(4, QFormLayout.ItemRole.LabelRole, self.label_5)
 
-        self.phoneEdit = QLineEdit(self.centralwidget)
+        self.phoneEdit = QLineEdit(self.widget)
         self.phoneEdit.setObjectName(u"phoneEdit")
+        self.phoneEdit.setMaximumSize(QSize(200, 16777215))
         self.phoneEdit.setMaxLength(12)
         self.phoneEdit.setPlaceholderText(u"+79161234567")
 
@@ -99,13 +114,15 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.searchButton = QPushButton(self.centralwidget)
+        self.searchButton = QPushButton(self.widget)
         self.searchButton.setObjectName(u"searchButton")
+        self.searchButton.setMaximumSize(QSize(140, 16777215))
 
         self.horizontalLayout_2.addWidget(self.searchButton)
 
-        self.pushButton = QPushButton(self.centralwidget)
+        self.pushButton = QPushButton(self.widget)
         self.pushButton.setObjectName(u"pushButton")
+        self.pushButton.setMaximumSize(QSize(140, 16777215))
 
         self.horizontalLayout_2.addWidget(self.pushButton)
 
@@ -113,18 +130,23 @@ class Ui_MainWindow(object):
         self.verticalLayout.addLayout(self.horizontalLayout_2)
 
 
-        self.horizontalLayout.addLayout(self.verticalLayout)
+        self.horizontalLayout.addWidget(self.widget)
 
         self.resultView = QTableView(self.centralwidget)
         self.resultView.setObjectName(u"resultView")
-        self.resultView.setMinimumSize(QSize(600, 0))
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.resultView.sizePolicy().hasHeightForWidth())
+        self.resultView.setSizePolicy(sizePolicy)
+        self.resultView.setMinimumSize(QSize(700, 0))
 
         self.horizontalLayout.addWidget(self.resultView)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 900, 25))
+        self.menubar.setGeometry(QRect(0, 0, 1045, 25))
         self.menuAdd = QMenu(self.menubar)
         self.menuAdd.setObjectName(u"menuAdd")
         MainWindow.setMenuBar(self.menubar)
