@@ -138,3 +138,75 @@ class DataController:
             )
             for row in rows
         ]
+    def add_contact(self, first_name, last_name, surname, street, phone, house, building, apartment):
+        """
+        @brief Добавляет новый контакт в базу данных.
+        @details Для каждого значения родительской таблицы сначала выполняется
+        поиск существующей записи. Если запись отсутствует, она создаётся.
+        Полученные идентификаторы используются для добавления записи в main.
+        """
+
+        self.db.connect()
+
+        try:
+            with self.db.connection.cursor() as cursor:
+                parent_tables = (
+                    ("firstnames", "firstname", first_name),
+                    ("lastnames", "lastname", last_name),
+                    ("surnames", "surname", surname),
+                    ("streets", "street", street),
+                )
+
+                ids = {}
+
+                for table, column, value in parent_tables:
+                    cursor.execute(
+                        f"SELECT id FROM {table} WHERE {column} = %s",
+                        (value,),
+                    )
+
+                    row = cursor.fetchone()
+
+                    if row is None:
+                        cursor.execute(
+                            f"INSERT INTO {table} ({column}) VALUES (%s) RETURNING id",
+                            (value,),
+                        )
+                        row = cursor.fetchone()
+
+                    ids[column] = row[0]
+
+                cursor.execute(
+                    """
+                    INSERT INTO main (
+                        lastname,
+                        firstname,
+                        surname,
+                        street,
+                        building,
+                        building_k,
+                        apartment,
+                        tel
+                    )
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                    """,
+                    (
+                        ids["lastname"],
+                        ids["firstname"],
+                        ids["surname"],
+                        ids["street"],
+                        house,
+                        building,
+                        apartment,
+                        phone,
+                    ),
+                )
+
+                self.db.connection.commit()
+
+        except Exception:
+            self.db.connection.rollback()
+            raise
+
+        finally:
+            self.db.close()
