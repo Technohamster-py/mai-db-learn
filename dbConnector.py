@@ -1,5 +1,7 @@
-import psycopg2
 import typing
+
+import psycopg2
+
 
 class dbConnector:
     def __init__(self, dbName, userName, password, host="localhost", port=5432):
@@ -12,23 +14,35 @@ class dbConnector:
         self.connection = None
 
     def connect(self):
-        self.connection = psycopg2.connect(user=self.userName, password=self.password, host=self.host, port=self.port, database=self.dbName)
+        self.connection = psycopg2.connect(
+            user=self.userName,
+            password=self.password,
+            host=self.host,
+            port=self.port,
+            database=self.dbName,
+        )
 
     def close(self):
-        self.connection.close()
+        if self.connection is not None:
+            self.connection.close()
+            self.connection = None
 
-    def execute(self, query) -> typing.List[typing.Tuple] | None:
+    def execute(self, query, params=None) -> typing.List[typing.Tuple]:
+        """
+        @brief Выполняет SQL-запрос и возвращает результат.
+        @details Параметры передаются отдельно от SQL-запроса, что позволяет использовать параметризованные запросы.
+        """
+
         self.connect()
-        cursor = self.connection.cursor()
-        cursor.execute(query)
 
         try:
-            rows = cursor.fetchall()
-        except:
-            self.connection.commit()
-            self.close()
-            return []
+            with self.connection.cursor() as cursor:
+                cursor.execute(query, params)
 
-        cursor.close()
-        self.close()
-        return rows
+                if cursor.description is None:
+                    self.connection.commit()
+                    return []
+
+                return cursor.fetchall()
+        finally:
+            self.close()

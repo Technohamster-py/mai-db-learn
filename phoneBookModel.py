@@ -43,3 +43,13 @@ class PhoneBookModel(QtCore.QAbstractTableModel):
                 case 5: return user.house
                 case 6: return user.building
                 case 7: return user.apartment
+
+    def setUsers(self, users):
+        """
+        @brief Заменяет содержимое модели.
+        @details QTableView уведомляется о полном изменении набора данных.
+        """
+
+        self.beginResetModel()
+        self.users = users if users is not None else []
+        self.endResetModel()
