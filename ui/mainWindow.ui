@@ -22,7 +22,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QWidget" name="" native="true">
+     <widget class="QWidget" name="widget" native="true">
       <property name="maximumSize">
        <size>
         <width>300</width>
@@ -246,12 +246,42 @@
     </property>
     <addaction name="actionContact"/>
    </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionFirst_names"/>
+    <addaction name="actionSurnames"/>
+    <addaction name="actionLast_names"/>
+    <addaction name="actionStreets"/>
+   </widget>
    <addaction name="menuAdd"/>
+   <addaction name="menuEdit"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionContact">
    <property name="text">
     <string>Contact</string>
+   </property>
+  </action>
+  <action name="actionFirst_names">
+   <property name="text">
+    <string>First names</string>
+   </property>
+  </action>
+  <action name="actionSurnames">
+   <property name="text">
+    <string>Surnames</string>
+   </property>
+  </action>
+  <action name="actionLast_names">
+   <property name="text">
+    <string>Last names</string>
+   </property>
+  </action>
+  <action name="actionStreets">
+   <property name="text">
+    <string>Streets</string>
    </property>
   </action>
  </widget>

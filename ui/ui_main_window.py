@@ -30,6 +30,14 @@ class Ui_MainWindow(object):
         MainWindow.setMinimumSize(QSize(900, 0))
         self.actionContact = QAction(MainWindow)
         self.actionContact.setObjectName(u"actionContact")
+        self.actionFirst_names = QAction(MainWindow)
+        self.actionFirst_names.setObjectName(u"actionFirst_names")
+        self.actionSurnames = QAction(MainWindow)
+        self.actionSurnames.setObjectName(u"actionSurnames")
+        self.actionLast_names = QAction(MainWindow)
+        self.actionLast_names.setObjectName(u"actionLast_names")
+        self.actionStreets = QAction(MainWindow)
+        self.actionStreets.setObjectName(u"actionStreets")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
@@ -149,13 +157,20 @@ class Ui_MainWindow(object):
         self.menubar.setGeometry(QRect(0, 0, 1045, 25))
         self.menuAdd = QMenu(self.menubar)
         self.menuAdd.setObjectName(u"menuAdd")
+        self.menuEdit = QMenu(self.menubar)
+        self.menuEdit.setObjectName(u"menuEdit")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
         self.menubar.addAction(self.menuAdd.menuAction())
+        self.menubar.addAction(self.menuEdit.menuAction())
         self.menuAdd.addAction(self.actionContact)
+        self.menuEdit.addAction(self.actionFirst_names)
+        self.menuEdit.addAction(self.actionSurnames)
+        self.menuEdit.addAction(self.actionLast_names)
+        self.menuEdit.addAction(self.actionStreets)
 
         self.retranslateUi(MainWindow)
 
@@ -165,6 +180,10 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.actionContact.setText(QCoreApplication.translate("MainWindow", u"Contact", None))
+        self.actionFirst_names.setText(QCoreApplication.translate("MainWindow", u"First names", None))
+        self.actionSurnames.setText(QCoreApplication.translate("MainWindow", u"Surnames", None))
+        self.actionLast_names.setText(QCoreApplication.translate("MainWindow", u"Last names", None))
+        self.actionStreets.setText(QCoreApplication.translate("MainWindow", u"Streets", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"First name", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Surname", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Lastname", None))
@@ -175,5 +194,6 @@ class Ui_MainWindow(object):
         self.searchButton.setText(QCoreApplication.translate("MainWindow", u"Search", None))
         self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Reset", None))
         self.menuAdd.setTitle(QCoreApplication.translate("MainWindow", u"Add", None))
+        self.menuEdit.setTitle(QCoreApplication.translate("MainWindow", u"Edit", None))
     # retranslateUi
 
