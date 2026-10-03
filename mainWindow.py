@@ -4,6 +4,7 @@ from ui.ui_main_window import Ui_MainWindow
 from phoneBookModel import PhoneBookModel
 from db.dataController import DataController
 from dialogs.addContactDialog import AddContactDialog
+from dialogs.editParentDialog import EditParentDialog
 
 
 class MainWindow(QMainWindow):
@@ -51,13 +52,14 @@ class MainWindow(QMainWindow):
         )
 
     def _connect_signals(self):
-        """
-        @brief Подключает сигналы элементов интерфейса.
-        """
-
+        """ @brief Подключает сигналы элементов интерфейса. """
         self.ui.searchButton.clicked.connect(self._search)
         self.ui.pushButton.clicked.connect(self._reset)
         self.ui.actionContact.triggered.connect(self._add_contact)
+        self.ui.actionFirst_names.triggered.connect(lambda: self._edit_parent("firstnames", "firstname", "First names"))
+        self.ui.actionSurnames.triggered.connect(lambda: self._edit_parent("surnames", "surname", "Surnames"))
+        self.ui.actionLast_names.triggered.connect(lambda: self._edit_parent("lastnames", "lastname", "Last names"))
+        self.ui.actionStreets.triggered.connect(lambda: self._edit_parent("streets", "street", "Streets"))
 
     def _add_contact(self):
         """
@@ -179,3 +181,11 @@ class MainWindow(QMainWindow):
         self.phoneBookModel.setUsers(
             self.dataController.load_users()
         )
+
+    def _edit_parent(self, table, column, title):
+        """ @brief Открывает диалог редактирования родительской таблицы. @details После закрытия диалога обновляются поисковые списки и таблица контактов. """
+
+        dialog = EditParentDialog(self.dataController, table, column, title, self, )
+        dialog.exec()
+        self._reload_combo_boxes()
+        self.phoneBookModel.setUsers(self.dataController.load_users())

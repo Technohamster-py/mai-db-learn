@@ -208,3 +208,100 @@ class DataController:
 
         finally:
             self.db.close()
+
+    def load_parent_values(self, table, column):
+        """
+        @brief Загружает записи указанной родительской таблицы.
+        @details Возвращает пары (id, значение), отсортированные по значению.
+        """
+
+        allowed_tables = {
+            "firstnames": "firstname",
+            "lastnames": "lastname",
+            "surnames": "surname",
+            "streets": "street",
+        }
+
+        if allowed_tables.get(table) != column:
+            raise ValueError("Invalid parent table")
+
+        return self.db.execute(
+            f"""
+                SELECT id, {column}
+                FROM {table}
+                ORDER BY {column}
+                """
+        )
+
+    def add_parent_value(self, table, column, value):
+        """
+        @brief Добавляет запись в родительскую таблицу.
+        @details Имя таблицы и столбца проверяется по разрешённому списку,
+        а пользовательское значение передаётся как параметр SQL-запроса.
+        """
+
+        allowed_tables = {
+            "firstnames": "firstname",
+            "lastnames": "lastname",
+            "surnames": "surname",
+            "streets": "street",
+        }
+
+        if allowed_tables.get(table) != column:
+            raise ValueError("Invalid parent table")
+
+        self.db.execute(
+            f"INSERT INTO {table} ({column}) VALUES (%s)",
+            (value,),
+        )
+
+    def update_parent_value(self, table, column, old_value, new_value):
+        """
+        @brief Изменяет значение записи родительской таблицы.
+        @details Обновляется только значение, поэтому внешние ключи main
+        продолжают ссылаться на ту же запись.
+        """
+
+        allowed_tables = {
+            "firstnames": "firstname",
+            "lastnames": "lastname",
+            "surnames": "surname",
+            "streets": "street",
+        }
+
+        if allowed_tables.get(table) != column:
+            raise ValueError("Invalid parent table")
+
+        self.db.execute(
+            f"""
+                UPDATE {table}
+                SET {column} = %s
+                WHERE {column} = %s
+                """,
+            (new_value, old_value),
+        )
+
+    def delete_parent_value(self, table, column, value):
+        """
+        @brief Удаляет запись из родительской таблицы.
+        @details При наличии внешних ссылок PostgreSQL отклоняет операцию
+        согласно политике ON DELETE RESTRICT.
+        """
+
+        allowed_tables = {
+            "firstnames": "firstname",
+            "lastnames": "lastname",
+            "surnames": "surname",
+            "streets": "street",
+        }
+
+        if allowed_tables.get(table) != column:
+            raise ValueError("Invalid parent table")
+
+        self.db.execute(
+            f"""
+                DELETE FROM {table}
+                WHERE {column} = %s
+                """,
+            (value,),
+        )
