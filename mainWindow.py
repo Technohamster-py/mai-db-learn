@@ -5,6 +5,7 @@ from phoneBookModel import PhoneBookModel
 from db.dataController import DataController
 from dialogs.addContactDialog import AddContactDialog
 from dialogs.editParentDialog import EditParentDialog
+from dialogs.editContactDialog import EditContactDialog
 
 
 class MainWindow(QMainWindow):
@@ -61,6 +62,7 @@ class MainWindow(QMainWindow):
         self.ui.actionLast_names.triggered.connect(lambda: self._edit_parent("lastnames", "lastname", "Last names"))
         self.ui.actionStreets.triggered.connect(lambda: self._edit_parent("streets", "street", "Streets"))
         self.ui.actionDelete_contact.triggered.connect(self._delete_contact)
+        self.ui.actionEdit_contact.triggered.connect(self._edit_contact)
 
     def _add_contact(self):
         """
@@ -233,4 +235,68 @@ class MainWindow(QMainWindow):
 
         self.phoneBookModel.setUsers(
             self.dataController.load_users()
+        )
+
+    def _edit_contact(self):
+        """
+        @brief Открывает диалог редактирования выбранного контакта.
+        @details После успешного изменения обновляет таблицу и поисковые
+        списки. Если контакт не выбран, операция не выполняется.
+        """
+
+        indexes = self.ui.resultView.selectionModel().selectedRows()
+
+        if not indexes:
+            QMessageBox.information(
+                self,
+                "Edit contact",
+                "Select a contact to edit.",
+            )
+            return
+
+        row = indexes[0].row()
+        user = self.phoneBookModel.users[row]
+
+        dialog = EditContactDialog(
+            self.dataController,
+            user,
+            self,
+        )
+
+        if dialog.exec() != dialog.DialogCode.Accepted:
+            return
+
+        data = dialog.get_data()
+
+        if not all(data.values()):
+            QMessageBox.warning(
+                self,
+                "Edit contact",
+                "All fields must be filled.",
+            )
+            return
+
+        try:
+            self.dataController.update_contact(
+                user.id,
+                **data,
+            )
+        except Exception as error:
+            QMessageBox.critical(
+                self,
+                "Database error",
+                f"Failed to update contact:\n{error}",
+            )
+            return
+
+        self.phoneBookModel.setUsers(
+            self.dataController.load_users()
+        )
+
+        self._reload_combo_boxes()
+
+        QMessageBox.information(
+            self,
+            "Edit contact",
+            "Contact successfully updated.",
         )

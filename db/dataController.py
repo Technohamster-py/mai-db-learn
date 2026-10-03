@@ -319,3 +319,76 @@ class DataController:
             "DELETE FROM main WHERE id = %s",
             (user_id,),
         )
+
+    def update_contact(self, user_id, first_name, last_name, surname, street, phone, house, building, apartment):
+        """
+        @brief Изменяет существующий контакт.
+        @details Обновляет внешние ключи и остальные поля записи main
+        в рамках одной транзакции. Отсутствующие значения родительских
+        таблиц создаются автоматически.
+        """
+
+        self.db.connect()
+
+        try:
+            with self.db.connection.cursor() as cursor:
+                parent_tables = (
+                    ("firstnames", "firstname", first_name),
+                    ("lastnames", "lastname", last_name),
+                    ("surnames", "surname", surname),
+                    ("streets", "street", street),
+                )
+
+                ids = {}
+
+                for table, column, value in parent_tables:
+                    cursor.execute(
+                        f"SELECT id FROM {table} WHERE {column} = %s",
+                        (value,),
+                    )
+
+                    row = cursor.fetchone()
+
+                    if row is None:
+                        cursor.execute(
+                            f"INSERT INTO {table} ({column}) VALUES (%s) RETURNING id",
+                            (value,),
+                        )
+                        row = cursor.fetchone()
+
+                    ids[column] = row[0]
+
+                cursor.execute(
+                    """
+                    UPDATE main
+                    SET lastname = %s,
+                        firstname = %s,
+                        surname = %s,
+                        street = %s,
+                        building = %s,
+                        building_k = %s,
+                        apartment = %s,
+                        tel = %s
+                    WHERE id = %s
+                    """,
+                    (
+                        ids["lastname"],
+                        ids["firstname"],
+                        ids["surname"],
+                        ids["street"],
+                        house,
+                        building,
+                        apartment,
+                        phone,
+                        user_id,
+                    ),
+                )
+
+                self.db.connection.commit()
+
+        except Exception:
+            self.db.connection.rollback()
+            raise
+
+        finally:
+            self.db.close()

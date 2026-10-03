@@ -264,6 +264,7 @@
     <addaction name="actionLast_names"/>
     <addaction name="actionStreets"/>
     <addaction name="separator"/>
+    <addaction name="actionEdit_contact"/>
     <addaction name="actionDelete_contact"/>
    </widget>
    <addaction name="menuAdd"/>
@@ -301,6 +302,14 @@
    </property>
    <property name="shortcut">
     <string>Del</string>
+   </property>
+  </action>
+  <action name="actionEdit_contact">
+   <property name="text">
+    <string>Edit contact</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
    </property>
   </action>
  </widget>
