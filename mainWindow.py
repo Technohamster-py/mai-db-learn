@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QMainWindow, QMessageBox
 
 from ui.ui_main_window import Ui_MainWindow
 from phoneBookModel import PhoneBookModel
-from dataController import DataController
+from db.dataController import DataController
 from dialogs.addContactDialog import AddContactDialog
 
 

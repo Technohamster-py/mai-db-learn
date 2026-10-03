@@ -1,4 +1,4 @@
-from dbConnector import dbConnector
+from db.dbConnector import dbConnector
 from db.queries import QUERY
 from user import User
 from conf import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT
@@ -68,12 +68,12 @@ class DataController:
         return [row[0] for row in self.db.execute(QUERY["streets"])]
 
     def search_users(
-        self,
-        first_name=None,
-        last_name=None,
-        surname=None,
-        street=None,
-        phone=None,
+            self,
+            first_name=None,
+            last_name=None,
+            surname=None,
+            street=None,
+            phone=None,
     ):
         """
         @brief Выполняет поиск пользователей по заданным параметрам.
@@ -81,21 +81,20 @@ class DataController:
         """
 
         query = """
-            SELECT
-                lastnames.lastname,
-                firstnames.firstname,
-                surnames.surname,
-                main.tel,
-                streets.street,
-                main.building,
-                main.building_k,
-                main.apartment
-            FROM main
-            LEFT JOIN lastnames ON main.lastname = lastnames.id
-            LEFT JOIN firstnames ON main.firstname = firstnames.id
-            LEFT JOIN surnames ON main.surname = surnames.id
-            LEFT JOIN streets ON main.street = streets.id
-        """
+                SELECT lastnames.lastname,
+                       firstnames.firstname,
+                       surnames.surname,
+                       main.tel,
+                       streets.street,
+                       main.building,
+                       main.building_k,
+                       main.apartment
+                FROM main
+                         LEFT JOIN lastnames ON main.lastname = lastnames.id
+                         LEFT JOIN firstnames ON main.firstname = firstnames.id
+                         LEFT JOIN surnames ON main.surname = surnames.id
+                         LEFT JOIN streets ON main.street = streets.id \
+                """
 
         conditions = []
         params = []
@@ -138,6 +137,7 @@ class DataController:
             )
             for row in rows
         ]
+
     def add_contact(self, first_name, last_name, surname, street, phone, house, building, apartment):
         """
         @brief Добавляет новый контакт в базу данных.
@@ -178,16 +178,14 @@ class DataController:
 
                 cursor.execute(
                     """
-                    INSERT INTO main (
-                        lastname,
-                        firstname,
-                        surname,
-                        street,
-                        building,
-                        building_k,
-                        apartment,
-                        tel
-                    )
+                    INSERT INTO main (lastname,
+                                      firstname,
+                                      surname,
+                                      street,
+                                      building,
+                                      building_k,
+                                      apartment,
+                                      tel)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                     """,
                     (
