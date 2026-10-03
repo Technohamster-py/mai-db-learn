@@ -227,6 +227,15 @@
         <height>0</height>
        </size>
       </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+      </property>
+      <property name="selectionMode">
+       <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+      </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+      </property>
      </widget>
     </item>
    </layout>
@@ -254,6 +263,8 @@
     <addaction name="actionSurnames"/>
     <addaction name="actionLast_names"/>
     <addaction name="actionStreets"/>
+    <addaction name="separator"/>
+    <addaction name="actionDelete_contact"/>
    </widget>
    <addaction name="menuAdd"/>
    <addaction name="menuEdit"/>
@@ -282,6 +293,14 @@
   <action name="actionStreets">
    <property name="text">
     <string>Streets</string>
+   </property>
+  </action>
+  <action name="actionDelete_contact">
+   <property name="text">
+    <string>Delete contact</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
    </property>
   </action>
  </widget>

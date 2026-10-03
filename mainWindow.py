@@ -60,6 +60,7 @@ class MainWindow(QMainWindow):
         self.ui.actionSurnames.triggered.connect(lambda: self._edit_parent("surnames", "surname", "Surnames"))
         self.ui.actionLast_names.triggered.connect(lambda: self._edit_parent("lastnames", "lastname", "Last names"))
         self.ui.actionStreets.triggered.connect(lambda: self._edit_parent("streets", "street", "Streets"))
+        self.ui.actionDelete_contact.triggered.connect(self._delete_contact)
 
     def _add_contact(self):
         """
@@ -189,3 +190,47 @@ class MainWindow(QMainWindow):
         dialog.exec()
         self._reload_combo_boxes()
         self.phoneBookModel.setUsers(self.dataController.load_users())
+
+    def _delete_contact(self):
+        """
+        @brief Удаляет выбранный контакт.
+        @details Перед удалением пользователь должен подтвердить операцию.
+        """
+
+        indexes = self.ui.resultView.selectionModel().selectedRows()
+
+        if not indexes:
+            QMessageBox.information(
+                self,
+                "Delete contact",
+                "Select a contact to delete.",
+            )
+            return
+
+        row = indexes[0].row()
+        user = self.phoneBookModel.users[row]
+
+        result = QMessageBox.question(
+            self,
+            "Delete contact",
+            f"Delete contact:\n{user}\n\nAre you sure?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No,
+        )
+
+        if result != QMessageBox.StandardButton.Yes:
+            return
+
+        try:
+            self.dataController.delete_user(user.id)
+        except Exception as error:
+            QMessageBox.critical(
+                self,
+                "Database error",
+                f"Failed to delete contact:\n{error}",
+            )
+            return
+
+        self.phoneBookModel.setUsers(
+            self.dataController.load_users()
+        )

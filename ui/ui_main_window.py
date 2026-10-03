@@ -16,11 +16,11 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QFormLayout, QHBoxLayout,
-    QHeaderView, QLabel, QLayout, QLineEdit,
-    QMainWindow, QMenu, QMenuBar, QPushButton,
-    QSizePolicy, QSpacerItem, QStatusBar, QTableView,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QFormLayout,
+    QHBoxLayout, QHeaderView, QLabel, QLayout,
+    QLineEdit, QMainWindow, QMenu, QMenuBar,
+    QPushButton, QSizePolicy, QSpacerItem, QStatusBar,
+    QTableView, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -38,6 +38,8 @@ class Ui_MainWindow(object):
         self.actionLast_names.setObjectName(u"actionLast_names")
         self.actionStreets = QAction(MainWindow)
         self.actionStreets.setObjectName(u"actionStreets")
+        self.actionDelete_contact = QAction(MainWindow)
+        self.actionDelete_contact.setObjectName(u"actionDelete_contact")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
@@ -148,6 +150,9 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.resultView.sizePolicy().hasHeightForWidth())
         self.resultView.setSizePolicy(sizePolicy)
         self.resultView.setMinimumSize(QSize(700, 0))
+        self.resultView.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.resultView.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.resultView.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
 
         self.horizontalLayout.addWidget(self.resultView)
 
@@ -171,6 +176,8 @@ class Ui_MainWindow(object):
         self.menuEdit.addAction(self.actionSurnames)
         self.menuEdit.addAction(self.actionLast_names)
         self.menuEdit.addAction(self.actionStreets)
+        self.menuEdit.addSeparator()
+        self.menuEdit.addAction(self.actionDelete_contact)
 
         self.retranslateUi(MainWindow)
 
@@ -184,6 +191,10 @@ class Ui_MainWindow(object):
         self.actionSurnames.setText(QCoreApplication.translate("MainWindow", u"Surnames", None))
         self.actionLast_names.setText(QCoreApplication.translate("MainWindow", u"Last names", None))
         self.actionStreets.setText(QCoreApplication.translate("MainWindow", u"Streets", None))
+        self.actionDelete_contact.setText(QCoreApplication.translate("MainWindow", u"Delete contact", None))
+#if QT_CONFIG(shortcut)
+        self.actionDelete_contact.setShortcut(QCoreApplication.translate("MainWindow", u"Del", None))
+#endif // QT_CONFIG(shortcut)
         self.label.setText(QCoreApplication.translate("MainWindow", u"First name", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Surname", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Lastname", None))

@@ -1,6 +1,7 @@
 QUERY = {
     "all": """
         SELECT
+            main.id,
             lastnames.lastname,
             firstnames.firstname,
             surnames.surname,

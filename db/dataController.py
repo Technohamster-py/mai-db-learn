@@ -27,14 +27,15 @@ class DataController:
 
         return [
             User(
-                last_name=row[0],
-                first_name=row[1],
-                surname=row[2],
-                phone=row[3],
-                street_address=row[4],
-                house=row[5],
-                building=row[6],
-                apartment=row[7],
+                user_id=row[0],
+                last_name=row[1],
+                first_name=row[2],
+                surname=row[3],
+                phone=row[4],
+                street_address=row[5],
+                house=row[6],
+                building=row[7],
+                apartment=row[8],
             )
             for row in rows
         ]
@@ -81,7 +82,8 @@ class DataController:
         """
 
         query = """
-                SELECT lastnames.lastname,
+                SELECT main.id,
+                       lastnames.lastname,
                        firstnames.firstname,
                        surnames.surname,
                        main.tel,
@@ -126,14 +128,15 @@ class DataController:
 
         return [
             User(
-                last_name=row[0],
-                first_name=row[1],
-                surname=row[2],
-                phone=row[3],
-                street_address=row[4],
-                house=row[5],
-                building=row[6],
-                apartment=row[7],
+                user_id=row[0],
+                last_name=row[1],
+                first_name=row[2],
+                surname=row[3],
+                phone=row[4],
+                street_address=row[5],
+                house=row[6],
+                building=row[7],
+                apartment=row[8],
             )
             for row in rows
         ]
@@ -304,4 +307,15 @@ class DataController:
                 WHERE {column} = %s
                 """,
             (value,),
+        )
+
+    def delete_user(self, user_id):
+        """
+        @brief Удаляет контакт из таблицы main.
+        @details Запись идентифицируется по первичному ключу main.id.
+        """
+
+        self.db.execute(
+            "DELETE FROM main WHERE id = %s",
+            (user_id,),
         )
